@@ -2,7 +2,9 @@ import geopandas
 import leafmap.foliumap as leafmap
 import streamlit as st
 from PIL import Image
-from request_ukraine import russian
+from request_ukraine import russian_occupies
+from request_ukraine import coflicts
+import pandas as pd
 
 # Page Config
 st.set_page_config(f'Ukraine', layout="wide", page_icon='gizlogo.png')
@@ -25,6 +27,7 @@ def show_map() -> None:
     # Create Leaf Map with the layers
     m = leafmap.Map(center=[48.383022, 31.1828699],
                     zoom=6,
+                    height=600,
                     layers_control=False,
                     measure_control=False,
                     attribution_control=False,
@@ -32,7 +35,15 @@ def show_map() -> None:
                     fullscreen_control=False,)
     m.add_basemap('OpenStreetMap.DE')
     m.add_geojson('ukraine-geojson.json', layer_name='Ukraine Territory', fill_colors=['blue'])
-    m.add_geojson(russian(), layer_name='Russian Occupies', fill_colors=['red'], )
+    m.add_geojson(russian_occupies(), layer_name='Russian Occupies', fill_colors=['red'], )
+
+    df = coflicts()
+    m.add_points_from_xy(
+        coflicts(),
+        x="Latitude",
+        y="Longitude",
+        spin=True
+    )
 
     m.add_legend(title='LEGEND', labels=['Ukraine Territory', 'Russian Occupies'], colors=['#787DEA', '#DC5D7D'])
 

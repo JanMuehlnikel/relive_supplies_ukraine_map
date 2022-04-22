@@ -1,5 +1,6 @@
 import requests
 import json
+import pandas as pd
 
 API_KEY = '67b2d2a11ee80a10864a77892a1fe300'
 response = requests.get(
@@ -10,7 +11,7 @@ print(response.status_code)
 ukraine_info = response.json()
 
 
-def russian() -> json:
+def russian_occupies() -> json:
     ukraine_info_list = ukraine_info['features']
 
     russian_obtained = {'type': 'FeatureCollection', 'features': []}
@@ -21,4 +22,18 @@ def russian() -> json:
     return russian_obtained
 
 
-russian()
+def coflicts():
+    ukraine_info_list = ukraine_info['features']
+
+    conflits_dict = {'type': 'FeatureCollection', 'features': []}
+    info = []
+    for i in ukraine_info_list:
+        if i['geometry']['type'] == 'Point':
+            info.append([
+                i['properties']['location'].encode(),
+                i['properties']['message'].encode(),
+                i['geometry']['coordinates'][0],
+                i['geometry']['coordinates'][1]
+            ])
+
+    return pd.DataFrame(info, columns=['Location', 'Info', 'Latitude', 'Longitude'])
