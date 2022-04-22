@@ -1,5 +1,3 @@
 streamlit
 geopandas
 leafmap
-PIL
-requests
