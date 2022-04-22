@@ -4,7 +4,6 @@ import streamlit as st
 from PIL import Image
 from request_ukraine import russian_occupies
 from request_ukraine import coflicts
-import pandas as pd
 
 # Page Config
 st.set_page_config(f'Ukraine', layout="wide", page_icon='gizlogo.png')
